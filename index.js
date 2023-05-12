@@ -39,12 +39,34 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const person = persons.filter(person => person.id === id)
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end
+    const person = persons.find(person => person.id === id)
+    if (person) response.json(person)
+    response.status(404).end()
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.findIndex(person => person.id === id)
+    persons.splice(person, 1)
+    response.status(404).end()
+})
+
+app.post('/api/persons', (request, response) => {
+    const person = {
+        "id": Math.floor(Math.random() * 10000),
+        "name": request.params.name,
+        "number": request.params.number,
     }
+
+    // response.status(404).end()
+
+    // try {
+    //     if (person) response.send(person)
+    // }
+    // catch (error) {
+    //     // response.status(400).json({error: 'name must be unique'}).end()
+    //     response.status(code).send(new Error('test'))
+    // }
 })
 
 const PORT = 3001
